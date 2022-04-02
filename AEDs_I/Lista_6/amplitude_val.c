@@ -1,62 +1,47 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
 
 int main(){
-	printf("\n\tNumero de termos divisiveis por X em uma PA\n\n");
+	printf("\n\tCalcula a amplitude de um conjunto de valores\n\n");
 
 	char Continuar;
-
-	int N;
     bool Erro;
+    int Valor;
 
-    do{
+    do{ // Repete se usuário tecla 'S' para Continuar
+	    
 	    do{
-	        printf("\nQuantidade de termos: ");
-	        scanf("%i",&N);
-	        Erro = N <= 0;
-	        if(Erro) printf("\n\aValor invalido!\n");
-	    } while(Erro);
-
-	    int T;
-
-	    printf("\nPrimeiro termo: ");
-	    scanf("%i",&T);
-
-	    int R;
-
-	    printf("\nRazao: ");
-	    scanf("%i",&R);
-
-	    int X;
-
-	    do{
-		    printf("\nVerificar quantos termos divisiveis por: ");
-		    scanf("%i",&X);
-		    Erro = X <= 0;
-	        if(Erro) printf("\n\aValor invalido!\n");
+		    printf("\nValor: ");
+		    scanf("%i",&Valor);
+		    Erro = Valor < 0;
+		    if(Erro) printf("\n\aValor invalido!\n");
 		} while(Erro);
 
-		int Divisiveis = 0;
 
-		printf("\nTermos:\n");
+		int Maior = Valor;
+		int Menor = Valor;
 
-	    for(int i = 0; i < N; i ++){
-	        printf("%i\n",T);
+		while(Valor > 0){
+			do{
+			    printf("\nValor: ");
+			    scanf("%i",&Valor);
+			    Erro = Valor < 0;
+			    if(Erro) printf("\n\aValor invalido!\n");
+				if(Valor != 0){
+				    if(Valor > Maior) Maior = Valor;
+				    if(Valor < Menor) Menor = Valor;
+				}
+			} while(Erro);
+		} // fim while()
+	
+		int Amplitude = Maior - Menor;
 
-	        int Resto = T % X; 
-	        if(Resto == 0){
-	        	Divisiveis++;
-	        }
+		if(Amplitude > 0) printf("\nAmplitude = %i\n",Amplitude);
+		else printf("\nNenhum valor informado\n");
 
-	        T += R;
-	    }
-
-	    printf("\nQuantidade de termos divisiveis por %i: %i\n",X,Divisiveis);
-
-	    do{
+		 do{
 		    printf("\nRealizar novo calculo [S/N]? ");
 		    scanf(" %c",&Continuar);
 		    Continuar = toupper(Continuar);
@@ -64,7 +49,7 @@ int main(){
 		    if(Erro) printf("\n\aValor invalido!\n");
 		} while(Erro);
 
-	} while(Continuar == 'S');
+	} while(Continuar == 'S'); // fim do{}while
 
 	return 0;
 }
