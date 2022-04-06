@@ -16,11 +16,25 @@ int main(){
 	while(!FLAG){
 		int Fat = 1;
 
+		///*
+		// Versão com while 
+		int Valor = N;
+
+		while(Valor > 1){
+			Fat *= Valor;
+			printf("\nFat = %i\n",Fat);
+			Valor--;
+		}
+		//*/
+
+		/*
+		// Versão com for 
 		for(int i = 0; i < N; i++){
 			Fat *= (N-i);
 		}
+		*/
 
-		printf("\nResultado = %i\n",Fat);
+		printf("\n%i! = %i\n",N,Fat);
 
 		printf("\n[Numero negativo encerra]");
 		printf("\nNumero = ");
