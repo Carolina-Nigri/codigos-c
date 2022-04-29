@@ -17,19 +17,19 @@ int main(){
     } while (Erro);
 
     int Par = 2;
-    printf("\nPares:");
+    printf("\nPares:\n");
     
     for(int i = 0; i < N; i++){
-        printf("\n%i",Par);
-        Par *= 2;
+        printf("%i\n",Par);
+        Par += 2;
     } // fim for
 
     int Impar = 1;
-    printf("\nImpares:");
+    printf("\nImpares:\n");
     
     for(int i = 0; i < N; i++){
-        printf("\n%i",Impar);
-        Impar *= 3;
+        printf("%i\n",Impar);
+        Impar += 2;
     } // fim for
 
     return 0;
