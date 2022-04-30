@@ -1,12 +1,12 @@
 // Documentação das funções
 /***************************************************************
-* Nome: primosEntreSi
+* Nome: ehPrimo
 * Elaboração: 29/04/22
-* Última alteração: 29/04/22
+* Última alteração: 29/04/22 
 * Autor: Carolina Morais Nigri
-* Contexto de ação: Verifica se dois números naturais são primos entre si ou não 
-* Argumentos: A e B (valores inteiros - naturais)
-* Valor gerado: Primos (valor booleano)
+* Contexto de ação: Verifica se é um número natural primo ou não
+* Argumentos: N (natural)
+* Valor gerado: Primo (valor booleano)
 ****************************************************************
 * Nome: leiaNatural
 * Elaboração: 29/04/22
@@ -25,47 +25,40 @@
 
 // Protótipos
 int leiaNatural();
-bool primosEntreSi(int A, int B);
+bool ehPrimo(int N);
 
 int main(){
-    printf("\n\tPrimos entre si\n\n");
+    printf("\n\tIdentifica se o numero eh primo\n\n");
 
     // Teste das funções
-    int A = leiaNatural();
-    int B = leiaNatural();
-    
-    if(primosEntreSi(A,B)) printf("\nSão primos entre si\n");
-    else printf("\nNão são primos entre si\n");
+    int Num = leiaNatural();
+    if(ehPrimo(Num)) printf("\nEh primo\n");
+    else printf("\nNao eh primo\n");
 
     return 0;
 } // fim main()
 
-bool primosEntreSi(int A, int B){ 
-    bool Primos = true;
-    int Menor;
-
-    if(A < B) Menor = A;
-    else Menor = B;
-
+bool ehPrimo(int N){
+    bool Primo = true;
     int i = 2;
 
-    while((i <= Menor) && Primos){
-        int RestoA = A % i;
-        int RestoB = B % i;
-        // Verifica se i é divisor comum => Ñ são primos entre si
-        if(RestoA == 0 && RestoB == 0) Primos = false;
+    while((i <= N/2) && Primo){
+        int Resto = N % i;
+        if(Resto == 0) Primo = false;
         i++;
     } // fim while
 
-    return Primos;
-} // fim primosEntreSi()
+    if(N == 1) Primo = false;
+
+    return Primo;
+} // fim ehPrimo()
 
 int leiaNatural(){
     int N;
     bool Erro;
 
     do{
-        printf("\nDigite um valor natural: ");
+        printf("\nValor natural: ");
         scanf("%i",&N);
         Erro = N <= 0;
         if (Erro) printf("\n\aSomente valores positivos!\n\n");
