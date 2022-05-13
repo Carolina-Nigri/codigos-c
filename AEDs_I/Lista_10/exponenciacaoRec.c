@@ -3,27 +3,45 @@
 #include <stdlib.h>
 
 // Protótipos
+float leReal(char* mensagem);
+int leInteiro(char* mensagem);
 float potencia(float Base, int Expoente);
 
 int main(){
     printf("\n\tCalcula exponenciacao\n\n");
 
-    printf("%f\n",potencia(2,10));
+    float Base = leReal("Base");
+    int Expoente = leInteiro("Expoente");
+
+    printf("\n%.2f ^ %i = %f\n",Base,Expoente,potencia(Base,Expoente));
 
     return 0;
 } // fim main()
 
+// Funções
+float leReal(char* mensagem){
+    float R;
+    printf("\n%s: ",mensagem);
+    scanf("%f",&R);
+
+    return R;
+} // fim leReal()
+
+int leInteiro(char* mensagem){
+    int I;
+    printf("\n%s: ",mensagem);
+    scanf("%i",&I);
+
+    return I;
+} // fim leInteiro()
+
 float potencia(float Base, int Expoente){
-   float Potencia = 1;
+    float Pot = 1;
 
-    if(Expoente > 0) Potencia = Base;
-    else if(Expoente < 0) Potencia = 1.0 / Base;
+    if(Expoente > 0) 
+        Pot = Base * potencia(Base,Expoente - 1);
+    else if(Expoente < 0) 
+        Pot = (1.0 / Base) * potencia(Base,Expoente + 1);
 
-    if(Expoente > 1){
-        Potencia = Base * potencia(Base,Expoente - 1);
-    } else if(Expoente < -1){
-        Potencia = (1.0 / Base) * potencia(Base,Expoente + 1);
-    }
-
-    return Potencia;
-} // fim potencia() 
+    return Pot;
+} // fim potencia()
