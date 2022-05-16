@@ -27,14 +27,12 @@ int main(){
 // Funções
 void trocaDoisArr(float A[],int tamanho,int x, int y){
     // Testa se as posições pedidas existem na array
-    if(x >= tamanho || y >= tamanho){
-        printf("\n\aPosição pedida nao existe!\n");
-    } else{
+    if((x < tamanho) && (y < tamanho) && (x >=0) && (y >=0)){
         float Aux = A[x];
 
         A[x] = A[y];
         A[y] = Aux; 
-    }    
+    }
 } // fim trocaDoisArr()
 
 void populaArr(float A[],int tamanho){
