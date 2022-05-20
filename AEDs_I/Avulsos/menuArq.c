@@ -93,5 +93,43 @@ void escrevaValores(FILE* arq){
 }
 
 void escrevaOrdemCrescente(FILE* arq){
+    arq = fopen("valores.dat","r");
+    int tamanho = 0;
+    int val;
 
+    if(arq != NULL){
+        // Lê valores do arq p/saber tamanho
+        fscanf(arq,"%i",&val);
+
+        while(!feof(arq)){
+            tamanho ++;
+            fscanf(arq,"%i",&val);
+        }
+        
+        int A[tamanho];
+        rewind(arq);
+
+        // Popula a array com os valores do arq
+        for(int i = 0;i < tamanho;i++){
+            fscanf(arq,"%i",&A[i]);
+        }
+
+        // Coloca em ordem crescente
+        int c = 0;
+        while(c < (tamanho - 1)){
+            for(int i = 0;i < tamanho;i++){
+                if(A[i] > A[i+1]){
+                    int aux = A[i];
+                    A[i] = A[i+1];
+                    A[i+1] = aux;
+                }
+            }
+            c++;
+        }    
+        
+        // Escreve valores em ordem crescente
+        for(int i = 0;i < tamanho;i++){
+            printf("\n%i",A[i]);
+        }
+    } // fim if(arq != NULL)
 }
