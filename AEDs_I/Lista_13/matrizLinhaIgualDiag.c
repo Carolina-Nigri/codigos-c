@@ -12,7 +12,7 @@ bool primLinhaEhIgualDiag(float M[][COL]);
 
 int main(){
     float M[LIN][COL] = {
-        {1,10,2},
+        {1,2,2},
         {4,10,6},
         {7,8,2},
     };
@@ -26,16 +26,19 @@ int main(){
 } // fim main()
 
 bool primLinhaEhIgualDiag(float M[][COL]){
-    int iguais = 1;
-    bool ehIgual = false;
+    bool iguais = false;
+    int i = 1;
     
     if(LIN == COL){
-        for(int i=1;i < COL;i++){
-            if(M[0][i] == M[i][i]) iguais++;
-        }
+        iguais = true;
 
-        if(iguais == COL) ehIgual = true;
+        while((i < COL) && iguais){
+            if(M[0][i] != M[i][i]) 
+                iguais = false;
+
+            i++;
+        }
     }
 
-    return ehIgual;
+    return iguais;
 }
