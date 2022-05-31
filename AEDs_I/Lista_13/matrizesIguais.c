@@ -36,17 +36,21 @@ int main(){
 } // fim main()
 
 bool saoIguaisMatrizes(float A[LIN][COL], float B[LIN][COL]){
-    bool iguais = false;
-    int qtdIgual = 0;
+    bool iguais = true;
+    int i = 0;
+    int j = 0;
 
-    for(int i=0;i < LIN;i++){
-        for(int j=0;j < COL;j++){
-            if(A[i][j] == B[i][j]) qtdIgual++;
+    while((i < LIN) && iguais){
+        if(A[i][j] != B[i][j]) 
+            iguais = false;
+
+        j++;
+        if(j == COL){
+            i++;
+            j = 0;
         }
     }
-
-    if(qtdIgual == (LIN * COL)) iguais = true;
-
+    
     return iguais;
 } // fim saoIguaisMatrizes()
 
