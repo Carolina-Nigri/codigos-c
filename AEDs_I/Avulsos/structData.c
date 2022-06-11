@@ -33,7 +33,7 @@ int main(){
                 pesquisa(A);
                 break;
             default:
-                puts("Valor invalido");
+                puts("\nOpcao invalida");
         }
     } while(op != 0);
 
@@ -49,6 +49,7 @@ int menu(){
     puts("2 - Pesquisar aniversariantes do mes");
     printf("Sua opcao: ");
     scanf("%i",&op);
+    fflush(stdin);   
 
     return op;
 }
@@ -73,7 +74,7 @@ void pesquisa(Data A[]){
 void listaAniversariantes(Data A[], int mes){
     for(int i=0;i < MAX;i++){
         if(A[i].mes == mes){
-            printf("\nAluno %i",i+1);
+            printf("\nAluno %i, %i/%i/%i\n",i+1,A[i].dia,A[i].mes,A[i].ano);
         }
     }
 }
