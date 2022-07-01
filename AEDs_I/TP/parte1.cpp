@@ -89,16 +89,11 @@ class Data{
 
             return valida;
         }
-        string mesExtenso(){
-            string mes = " "; 
-
-            if(this -> ehDataValida()){
-                string extenso[] = {"janeiro", "fevereiro","marco","abril","maio","junho",
-                            "julho","agosto","setembro","outubro","novembro","dezembro"};
-                mes = extenso[(this -> mes) - 1];
-            }
+        char* mesExtenso(){
+            char* extenso[] = {"janeiro", "fevereiro","marco","abril","maio","junho",
+                        "julho","agosto","setembro","outubro","novembro","dezembro"};
             
-            return mes;
+            return extenso[(this -> mes) - 1];
         }
         void leData(){
             int dia;
