@@ -2,6 +2,10 @@
 #include <iostream>
 using namespace std;
 
+// Variávies globais
+const int MAX = 300;
+int tamanho = 0;
+
 // Classes
 class Data{
     private:
@@ -65,32 +69,38 @@ class Data{
             int restoDiv400 = (this -> ano) % 400;
       
             // Divisível por 4 e não por 100 OU Divisível por 400 = Bissexto
-            bool Bissexto = ((restoDiv4 == 0) && (restoDiv100 != 0) || (restoDiv400 == 0));
+            bool Bissexto = (((restoDiv4 == 0) && (restoDiv100 != 0)) || (restoDiv400 == 0));
       
             return Bissexto;
         }
         bool ehDataValida(){
+            // dia, mes, ano => Atributos do objeto corrente
             bool valida = false;
-            bool meses31 = mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 ||
+            bool mes31 = mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 ||
                             mes == 10 || mes == 12;
-            bool meses30 = mes == 4 || mes == 6 || mes == 9 || mes == 11;
+            bool mes30 = mes == 4 || mes == 6 || mes == 9 || mes == 11;
 
-            if(meses31){ // Meses de 31 dias
-                if(this -> dia == 31) valida = true;
-            } else if(meses30){ // Meses de 30 dias
-                if(this -> dia == 30) valida = true;
-            } else if(this -> mes == 2){ // Fevereiro
+            // Meses de 31 dias
+            if(mes31){ 
+                if(dia > 0 && dia <= 31) valida = true;
+            } 
+            // Meses de 30 dias
+            else if(mes30){ 
+                if(dia > 0 && dia <= 30) valida = true;
+            } 
+            // Fevereiro
+            else if(mes == 2){ 
                 if(this -> ehAnoBissexto()){ // Ano bissexto
-                    if(this -> dia == 29) valida = true;
+                    if(dia > 0 && dia <= 29) valida = true;
                 } else{ // Ano não é bissexto
-                    if(this -> dia == 28) valida = true;
+                    if(dia > 0 && dia <= 28) valida = true;
                 }
             }
 
             return valida;
         }
-        char* mesExtenso(){
-            char* extenso[] = {"janeiro", "fevereiro","marco","abril","maio","junho",
+        string mesExtenso(){
+            string extenso[] = {"janeiro", "fevereiro","marco","abril","maio","junho",
                         "julho","agosto","setembro","outubro","novembro","dezembro"};
             
             return extenso[(this -> mes) - 1];
@@ -100,13 +110,19 @@ class Data{
             int mes;
             int ano;
 
-            printf("\n[dd/mm/aaaa]: ");
-            scanf("%i/%i/%i",&dia,&mes,&ano);
+            do{
+                printf("\nData [dd/mm/aaaa]: ");
+                scanf("%i/%i/%i",&dia,&mes,&ano);
+                setData(dia,mes,ano);
 
-            setData(dia,mes,ano);
+                if(!(this -> ehDataValida())) puts("\nData invalida!");
+            } while(!(this -> ehDataValida()));
         }
         void escreveData(){
-            printf("\nData: %i/%i/%i\n",getDia(),getMes(),getAno());
+            if(this -> ehDataValida()) 
+                printf("\nData: %i/%i/%i\n",getDia(),getMes(),getAno());
+            else
+                puts("\nData invalida!");
         }
         bool ehMes(int mes){
             bool igual = false;
@@ -123,12 +139,19 @@ class Pessoa{
         string nome;
         Data nasc;
     public:
+        // Construtores
+        /*
+        Pessoa(){
+            
+        }
+        */
+
         // Sets
         void setNome(string nome){
             this -> nome = nome;
         }
         void setNasc(Data nasc){
-            this -> nasc = nasc;
+            (this -> nasc) = nasc;
         }
             
         // Gets
@@ -144,7 +167,7 @@ class Pessoa{
             string nome;
 
             printf("\nNome: ");
-            fflush(stdin);
+            cin.ignore();
             getline(cin,nome);
             setNome(nome);
 
@@ -152,27 +175,22 @@ class Pessoa{
             nasc.leData();
         }
         void escrevePessoa(){
-            printf("\nNome: %s",getNome());
+            cout << endl << "Nome: " << getNome();
             nasc.escreveData();
         }
 
 };
 
-// Variávies globais
-const int MAX = 300;
-int tamanho = 0;
-
 // Protótipos
 int menu();
-void cadastraData(Data* data[]);
-void listaDatas(Data* data[]);
-void pesquisaDatas(Data* data[]);
+void cadastraPessoa(Pessoa* pessoa[]);
+void listaPessoas(Pessoa* pessoa[]);
+void pesquisaPessoas(Pessoa* pessoa[]);
 int mesPesquisa();
-void listaDatas(Data* data[],int mes);
+void listaPessoas(Pessoa* pessoa[],int mes);
 
 int main(){
-/*
-    Data* data[MAX];
+    Pessoa* pessoa[MAX];
     int op;
     
     do{
@@ -184,29 +202,19 @@ int main(){
                 break;
 
             case 1:
-                cadastraData(data);
+                cadastraPessoa(pessoa);
                 break;
 
             case 2:
-                listaDatas(data);
+                listaPessoas(pessoa);
                 break;
 
             case 3:
-                pesquisaDatas(data);
+                pesquisaPessoas(pessoa);
                 break;
         }
 
     } while(op != 0);
-*/    
-
-    Pessoa* pessoa[MAX];
-    pessoa[0] = new Pessoa();
-    pessoa[0] -> lePessoa();
-    pessoa[0] -> escrevePessoa();
-
-    pessoa[1] = new Pessoa();
-    pessoa[1] -> lePessoa();
-    pessoa[1] -> escrevePessoa();
 
     return 0;
 }
@@ -263,7 +271,7 @@ int mesPesquisa(){
 }
 void listaPessoas(Pessoa* pessoa[],int mes){
     for(int i = 0;i < tamanho;i++){
-        if(pessoa[i] -> nasc.ehMes(mes)){
+        if((pessoa[i] -> getNasc()).ehMes(mes)){
             pessoa[i] -> escrevePessoa();
         }
     }

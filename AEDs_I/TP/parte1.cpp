@@ -2,6 +2,10 @@
 #include <iostream>
 using namespace std;
 
+// Variávies globais
+const int MAX = 300;
+int tamanho = 0;
+
 // Classes
 class Data{
     private:
@@ -13,6 +17,7 @@ class Data{
         // Construtores
         Data(){
             (this -> dia) = (this -> mes) = (this -> ano) = 0;
+            tamanho++;
         }
         
         // Sets
@@ -70,27 +75,33 @@ class Data{
             return Bissexto;
         }
         bool ehDataValida(){
+            // dia, mes, ano => Atributos do objeto corrente
             bool valida = false;
-            bool meses31 = mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 ||
+            bool mes31 = mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 ||
                             mes == 10 || mes == 12;
-            bool meses30 = mes == 4 || mes == 6 || mes == 9 || mes == 11;
+            bool mes30 = mes == 4 || mes == 6 || mes == 9 || mes == 11;
 
-            if(meses31){ // Meses de 31 dias
-                if(this -> dia == 31) valida = true;
-            } else if(meses30){ // Meses de 30 dias
-                if(this -> dia == 30) valida = true;
-            } else if(this -> mes == 2){ // Fevereiro
+            // Meses de 31 dias
+            if(mes31){ 
+                if(dia > 0 && dia <= 31) valida = true;
+            } 
+            // Meses de 30 dias
+            else if(mes30){ 
+                if(dia > 0 && dia <= 30) valida = true;
+            } 
+            // Fevereiro
+            else if(mes == 2){ 
                 if(this -> ehAnoBissexto()){ // Ano bissexto
-                    if(this -> dia == 29) valida = true;
+                    if(dia > 0 && dia <= 29) valida = true;
                 } else{ // Ano não é bissexto
-                    if(this -> dia == 28) valida = true;
+                    if(dia > 0 && dia <= 28) valida = true;
                 }
             }
 
             return valida;
         }
-        char* mesExtenso(){
-            char* extenso[] = {"janeiro", "fevereiro","marco","abril","maio","junho",
+        string mesExtenso(){
+            string extenso[] = {"janeiro", "fevereiro","marco","abril","maio","junho",
                         "julho","agosto","setembro","outubro","novembro","dezembro"};
             
             return extenso[(this -> mes) - 1];
@@ -100,13 +111,19 @@ class Data{
             int mes;
             int ano;
 
-            printf("\nData [dd/mm/aaaa]: ");
-            scanf("%i/%i/%i",&dia,&mes,&ano);
+            do{
+                printf("\nData [dd/mm/aaaa]: ");
+                scanf("%i/%i/%i",&dia,&mes,&ano);
+                setData(dia,mes,ano);
 
-            setData(dia,mes,ano);
+                if(!(this -> ehDataValida())) puts("\nData invalida!");
+            } while(!(this -> ehDataValida()));
         }
         void escreveData(){
-            printf("\nData: %i/%i/%i\n",getDia(),getMes(),getAno());
+            if(this -> ehDataValida()) 
+                printf("\nData: %i/%i/%i\n",getDia(),getMes(),getAno());
+            else
+                puts("\nData invalida!");
         }
         bool ehMes(int mes){
             bool igual = false;
@@ -117,10 +134,6 @@ class Data{
             return igual;
         }
 };
-
-// Variávies globais
-const int MAX = 300;
-int tamanho = 0;
 
 // Protótipos
 int menu();
@@ -182,8 +195,7 @@ int menu(){
 void cadastraData(Data* data[]){
     if(tamanho < MAX){
         data[tamanho] = new Data();
-        data[tamanho] -> leData();
-        tamanho++;
+        data[tamanho - 1] -> leData();
     } else{
         puts("\nNumero max de datas atingido");
     }
@@ -215,7 +227,7 @@ void listaDatas(Data* data[],int mes){
         if(data[i] -> ehMes(mes)){
             printf("\n%i",i);
             data[i] -> escreveData();
-            printf("%s\n",(data[i] -> mesExtenso()));
+            cout << (data[i] -> mesExtenso()) << endl;
         }
     }
 }
