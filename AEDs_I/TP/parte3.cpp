@@ -4,7 +4,8 @@ using namespace std;
 
 // Variávies globais
 const int MAX = 300;
-int tamanho = 0;
+int qtdAluno = 0;
+int qtdProf = 0;
 
 // Classes
 class Data{
@@ -120,7 +121,7 @@ class Data{
         }
         void escreveData(){
             if(this -> ehDataValida()) 
-                printf("\nData: %i/%i/%i\n",getDia(),getMes(),getAno());
+                printf("\nData: %i/%i/%i",getDia(),getMes(),getAno());
             else
                 puts("\nData invalida!");
         }
@@ -182,32 +183,17 @@ class Pessoa{
 
 };
 // Classes derivadas
-class Aluno : public Pessoa{
-    private:
-        // Atributos
-        string curso;
-    public:
-        // Construtores
-
-        // Sets
-        void setCurso(string curso){
-            (this -> curso) = curso;
-        }
-
-        // Gets
-        string origem(){
-            return this -> curso;
-        }
-        // Métodos
-
-};
 class Professor : public Pessoa{
     private:
         // Atributos
         string depto;
     public:
         // Construtores
-
+        /*
+        Professor(){
+            
+        }
+        */
         // Sets
         void setDepto(string depto){
             (this -> depto) = depto;
@@ -217,20 +203,75 @@ class Professor : public Pessoa{
         string origem(){
             return this -> depto;
         }
+        
         // Métodos
+        void leProfessor(){
+            this -> lePessoa();
 
+            string depto;
+
+            printf("\nDepartamento: ");
+            cin.ignore();
+            getline(cin,depto);
+            setDepto(depto);
+        }
+        void escreveProfessor(){
+            this -> escrevePessoa();
+
+            cout << endl << "Departamento: " << origem() << endl;
+        }
+};
+class Aluno : public Pessoa{
+    private:
+        // Atributos
+        string curso;
+    public:
+        // Construtores
+        /*
+        Aluno(){
+            
+        }
+        */
+        // Sets
+        void setCurso(string curso){
+            (this -> curso) = curso;
+        }
+
+        // Gets
+        string origem(){
+            return this -> curso;
+        }
+        
+        // Métodos
+        void leAluno(){
+            this -> lePessoa();
+
+            string curso;
+
+            printf("\nCurso: ");
+            cin.ignore();
+            getline(cin,curso);
+            setCurso(curso);
+        }
+        void escreveAluno(){
+            this -> escrevePessoa();
+
+            cout << endl << "Curso: " << origem() << endl;
+        }
 };
 
 // Protótipos
 int menu();
-void cadastraPessoa(Pessoa* pessoa[]);
-void listaPessoas(Pessoa* pessoa[]);
-void pesquisaPessoas(Pessoa* pessoa[]);
+void cadastraProfessor(Professor* professor[]);
+void cadastraAluno(Aluno* aluno[]);
+void listaPessoas(Professor* professor[], Aluno* aluno[]);
+void pesquisaPessoas(Professor* professor[], Aluno* aluno[]);
 int mesPesquisa();
-void listaPessoas(Pessoa* pessoa[],int mes);
+void listaPessoas(Professor* professor[], Aluno* aluno[],int mes);
 
 int main(){
-    Pessoa* pessoa[MAX];
+    Professor* professor[MAX];
+    Aluno* aluno[MAX];
     int op;
     
     do{
@@ -242,19 +283,19 @@ int main(){
                 break;
 
             case 1:
-                // Cadastra professor
+                cadastraProfessor(professor);
                 break;
 
             case 2:
-                // Cadastra aluno
+                cadastraAluno(aluno);
                 break;
 
             case 3:
-                listaPessoas(pessoa);
+                listaPessoas(professor,aluno);
                 break;
 
             case 4:
-                pesquisaPessoas(pessoa);
+                pesquisaPessoas(professor,aluno);
                 break;
         }
 
@@ -283,23 +324,43 @@ int menu(){
 
     return op;
 }
-void cadastraPessoa(Pessoa* pessoa[]){
-    if(tamanho < MAX){
-        pessoa[tamanho] = new Pessoa();
-        pessoa[tamanho] -> lePessoa();
-        tamanho++;
+void cadastraProfessor(Professor* professor[]){
+    if(qtdProf < MAX){
+        professor[qtdProf] = new Professor();
+        professor[qtdProf] -> leProfessor();
+        qtdProf++;
     } else{
-        puts("\nNumero max de pessoas atingido");
+        puts("\nNumero max de professores atingido");
     }
 }
-void listaPessoas(Pessoa* pessoa[]){
-    for(int i = 0;i < tamanho;i++){
-        pessoa[i] -> escrevePessoa();
+void cadastraAluno(Aluno* aluno[]){
+    if(qtdAluno < MAX){
+        aluno[qtdAluno] = new Aluno();
+        aluno[qtdAluno] -> leAluno();
+        qtdAluno++;
+    } else{
+        puts("\nNumero max de alunos atingido");
     }
 }
-void pesquisaPessoas(Pessoa* pessoa[]){
+void listaPessoas(Professor* professor[], Aluno* aluno[]){
+    // Lista professores
+    if(qtdProf > 0){
+        cout << endl << "\tProfessores:" << endl;
+        for(int i = 0;i < qtdProf;i++){
+            professor[i] -> escreveProfessor();
+        }
+    }
+    // Lista alunos
+    if(qtdAluno > 0){
+        cout << endl << "\tAlunos:" << endl;
+        for(int i = 0;i < qtdAluno;i++){
+            aluno[i] -> escreveAluno();
+        }
+    }
+}
+void pesquisaPessoas(Professor* professor[], Aluno* aluno[]){
     int mes = mesPesquisa();
-    listaPessoas(pessoa,mes);
+    listaPessoas(professor,aluno,mes);
 }
 int mesPesquisa(){
     int mes;
@@ -314,10 +375,23 @@ int mesPesquisa(){
 
     return mes;
 }
-void listaPessoas(Pessoa* pessoa[],int mes){
-    for(int i = 0;i < tamanho;i++){
-        if((pessoa[i] -> getNasc()).ehMes(mes)){
-            pessoa[i] -> escrevePessoa();
+void listaPessoas(Professor* professor[], Aluno* aluno[],int mes){
+    // Lista professores
+    if(qtdProf > 0){
+        cout << endl << "\tProfessores:" << endl;
+        for(int i = 0;i < qtdProf;i++){
+            if((professor[i] -> getNasc()).ehMes(mes)){
+                professor[i] -> escreveProfessor();
+            }
+        }
+    }
+    // Lista alunos
+    if(qtdAluno > 0){
+        cout << endl << "\tAlunos:" << endl;
+        for(int i = 0;i < qtdAluno;i++){
+            if((aluno[i] -> getNasc()).ehMes(mes)){
+                aluno[i] -> escreveAluno();
+            }
         }
     }
 }
